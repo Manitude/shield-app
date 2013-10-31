@@ -52,16 +52,19 @@ public class MainActivity extends ActionBarActivity
 
         switch (position) {
             case 0:
-                Fragment shieldMapFragment = new ShieldMapFragment();
+                new ShieldMapFragment();
+                Fragment shieldMapFragment = ShieldMapFragment.newInstance(position + 1);
                 shieldMapFragment.getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, shieldMapFragment)
                         .commit();
                 break;
             default:
+                new PlaceholderFragment();
+                Fragment placeholderFragment = PlaceholderFragment.newInstance(position + 1);
+                placeholderFragment.getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container,
-                                new PlaceholderFragment().newInstance(position + 1))
+                        .replace(R.id.container, placeholderFragment)
                         .commit();
                 break;
         }
@@ -109,7 +112,7 @@ public class MainActivity extends ActionBarActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as a parent activity is specified in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
