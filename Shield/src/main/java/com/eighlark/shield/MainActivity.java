@@ -1,5 +1,10 @@
 package com.eighlark.shield;
 
+/**
+ * Created at Eighlark Innovations.
+ * Author: Akshay
+ * Date: 1/11/13
+ */
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -98,9 +103,11 @@ public class MainActivity extends ActionBarActivity
             sNavigationDrawerFragment = (NavigationDrawerFragment)
                     getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         if (!sNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
+            /**
+             * Only show items in the action bar relevant to this screen
+             * if the drawer is not showing. Otherwise, let the drawer
+             * decide what to show in the action bar.
+             */
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
@@ -110,9 +117,11 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as a parent activity is specified in AndroidManifest.xml.
+        /**
+         * Handle action bar item clicks here. The action bar will
+         * automatically handle clicks on the Home/Up button, so long
+         * as a parent activity is specified in AndroidManifest.xml.
+         */
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;

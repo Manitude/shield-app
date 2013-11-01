@@ -1,5 +1,10 @@
 package com.eighlark.shield.fragments;
 
+/**
+ * Created at Eighlark Innovations.
+ * Author: Akshay
+ * Date: 1/11/13
+ */
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.IntentSender;
@@ -98,7 +103,7 @@ public class ShieldMapFragment extends Fragment
         try {
             rootView = inflater.inflate(R.layout.fragment_map, container, false);
         } catch (InflateException e) {
-            /* map is already there, just return the view as it is */
+            // Map is already there, just return the view as it is
         }
         return rootView;
     }
@@ -162,7 +167,7 @@ public class ShieldMapFragment extends Fragment
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
-		/*
+		/**
          * If the error has a resolution, start a Google Play services
          * activity to resolve it.
          */
@@ -212,8 +217,10 @@ public class ShieldMapFragment extends Fragment
 
         Toast.makeText(getActivity(),
                 getString(R.string.location_trace_status), Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
+        /**
+         * Return false so that we don't consume the event and the default behavior still occurs
+         * (the camera animates to the user's current position).
+         */
         return false;
     }
 

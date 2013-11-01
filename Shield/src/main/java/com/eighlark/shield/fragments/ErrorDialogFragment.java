@@ -1,5 +1,10 @@
 package com.eighlark.shield.fragments;
 
+/**
+ * Created at Eighlark Innovations.
+ * Author: Akshay
+ * Date: 1/11/13
+ */
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;

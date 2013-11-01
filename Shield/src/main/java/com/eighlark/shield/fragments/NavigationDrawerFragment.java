@@ -1,5 +1,10 @@
 package com.eighlark.shield.fragments;
 
+/**
+ * Created at Eighlark Innovations.
+ * Author: Akshay
+ * Date: 1/11/13
+ */
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -65,8 +70,10 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Read in the flag indicating whether or not the user has demonstrated awareness of the
-        // drawer. See PREF_USER_LEARNED_DRAWER for details.
+        /**
+         * Read in the flag indicating whether or not the user has demonstrated awareness of the
+         * drawer. See PREF_USER_LEARNED_DRAWER for details.
+         */
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
         sUserLearnedDrawer = sharedPreferences.getBoolean(PREF_USER_LEARNED_DRAWER, false);
@@ -129,8 +136,10 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        // ActionBarDrawerToggle ties together the proper interactions
-        // between the navigation drawer and the action bar app icon.
+        /**
+         * ActionBarDrawerToggle ties together the proper interactions
+         * between the navigation drawer and the action bar app icon.
+         */
         sDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
                 sDrawerLayout,                    /* DrawerLayout object */
@@ -156,8 +165,10 @@ public class NavigationDrawerFragment extends Fragment {
                 }
 
                 if (!sUserLearnedDrawer) {
-                    // The user manually opened the drawer; store this flag to prevent auto-showing
-                    // the navigation drawer automatically in the future.
+                    /**
+                     * The user manually opened the drawer; store this flag to prevent auto-showing
+                     * the navigation drawer automatically in the future.
+                     */
                     sUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(getActivity());
@@ -228,8 +239,10 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // If the drawer is open, show the global app actions in the action bar. See also
-        // showGlobalContextActionBar, which controls the top-left area of the action bar.
+        /**
+         * If the drawer is open, show the global app actions in the action bar. See also
+         * showGlobalContextActionBar, which controls the top-left area of the action bar.
+         */
         if (sDrawerLayout != null && isDrawerOpen()) {
             inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();

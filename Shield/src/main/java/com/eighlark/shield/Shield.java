@@ -1,5 +1,10 @@
 package com.eighlark.shield;
 
+/**
+ * Created at Eighlark Innovations.
+ * Author: Akshay
+ * Date: 1/11/13
+ */
 import android.app.Application;
 
 import com.testflightapp.lib.TestFlight;
