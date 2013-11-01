@@ -52,8 +52,6 @@ public class ShieldMapFragment extends Fragment
 
     private LocationClient sLocationClient;
     private LocationRequest sLocationRequest;
-    private LatLng currentLocation;
-    private LatLng currentLatLng;
     private Marker currentLocationMarker;
 
     /**
@@ -151,8 +149,7 @@ public class ShieldMapFragment extends Fragment
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+            LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
             // TODO Create custom location marker by retrieving profile picture of user from Google+
             currentLocationMarker.setPosition(currentLocation);
@@ -239,7 +236,7 @@ public class ShieldMapFragment extends Fragment
 
                 sMap.setMyLocationEnabled(true);
                 sMap.setOnMyLocationButtonClickListener(this);
-                sMap.setOnInfoWindowClickListener((GoogleMap.OnInfoWindowClickListener) this);
+                sMap.setOnInfoWindowClickListener(this);
                 currentLocationMarker = sMap.addMarker(new MarkerOptions()
                         .position(new LatLng(
                                 sLocationClient.getLastLocation().getLatitude(),
