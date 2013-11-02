@@ -92,11 +92,14 @@ public class User {
      */
     public void save() throws IllegalStateException {
         if (this.name == null)
-            throw new IllegalStateException("Set Name using setName() before calling save()");
+            throw new IllegalStateException(
+                    "Set Name using User.setName() before calling User.save()");
         if (this.email == null)
-            throw new IllegalStateException("Set Email using setEmail() before calling save()");
+            throw new IllegalStateException(
+                    "Set Email using User.setEmail() before calling User.save()");
         if (this.gcmId == null)
-            throw new IllegalStateException("Set GcmId using setGcmId() before calling save()");
+            throw new IllegalStateException(
+                    "Set GcmId using User.setGcmId() before calling User.save()");
 
         SharedPreferences.Editor sEditor = sharedPreferences.edit();
 
