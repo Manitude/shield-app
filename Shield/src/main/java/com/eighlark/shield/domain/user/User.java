@@ -89,16 +89,20 @@ public class User {
 
     /**
      * Method to persist user information into shared preferences
-     * @param name, User name - Google Plus Display Name
-     * @param email, Email Address - GMail address (preferably)
-     * @param gcm_id, Google Cloud Messaging ID.
      */
-    public void save(String name, String email, String gcm_id) {
+    public void save() throws IllegalStateException {
+        if (this.name == null)
+            throw new IllegalStateException("Set Name using setName() before calling save()");
+        if (this.email == null)
+            throw new IllegalStateException("Set Email using setEmail() before calling save()");
+        if (this.gcmId == null)
+            throw new IllegalStateException("Set GcmId using setGcmId() before calling save()");
+
         SharedPreferences.Editor sEditor = sharedPreferences.edit();
 
-        sEditor.putString(PREF_NAME, name);
-        sEditor.putString(PREF_EMAIL, email);
-        sEditor.putString(PREF_GCM_ID, gcm_id);
+        sEditor.putString(PREF_NAME, this.name);
+        sEditor.putString(PREF_EMAIL, this.email);
+        sEditor.putString(PREF_GCM_ID, this.gcmId);
 
         // Sets flag reflecting user information has been saved.
         sEditor.putBoolean(PREF_USER_EXISTS, true);
