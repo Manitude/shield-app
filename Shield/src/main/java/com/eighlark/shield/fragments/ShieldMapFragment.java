@@ -7,6 +7,7 @@ package com.eighlark.shield.fragments;
  */
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
@@ -244,11 +245,17 @@ public class ShieldMapFragment extends Fragment
                 sMap.setMyLocationEnabled(true);
                 sMap.setOnMyLocationButtonClickListener(this);
                 sMap.setOnInfoWindowClickListener(this);
-                currentLocationMarker = sMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(
-                                sLocationClient.getLastLocation().getLatitude(),
-                                sLocationClient.getLastLocation().getLongitude()))
-                        .title(getString(R.string.marker_current_location)));
+                try {
+                    currentLocationMarker = sMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(
+                                    sLocationClient.getLastLocation().getLatitude(),
+                                    sLocationClient.getLastLocation().getLongitude()))
+                            .title(getString(R.string.marker_current_location)));
+                } catch (NullPointerException e) {
+                    Intent intent = getActivity().getIntent();
+                    getActivity().finish();
+                    startActivity(intent);
+                }
             }
         }
     }

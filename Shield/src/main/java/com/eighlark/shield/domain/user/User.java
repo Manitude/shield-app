@@ -69,7 +69,7 @@ public class User {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
 
         // If user information is already saved, retrieve it.
-        if (isSet()) {
+        if (exists()) {
             this.name = sharedPreferences.getString(
                     PREF_NAME, context.getString(R.string.PREF_NAME_DEFAULT));
             this.email = sharedPreferences.getString(
@@ -83,7 +83,7 @@ public class User {
      * Checks if the user has been saved.
      * @return true if user information is stored in shared preference.
      */
-    public boolean isSet() {
+    public boolean exists() {
         return sharedPreferences.getBoolean(PREF_USER_EXISTS, false);
     }
 
