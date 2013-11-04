@@ -19,4 +19,7 @@
     <string name="connection_error_sign_in_required">The user is not signed in</string>
     <string name="connection_error_unknown">An unknown error occurred</string>
     <string name="check_network_connection">Check Network Connection</string>
+
+    <!-- GCM Errors -->
+    <string name="gcm_io_exception">Could not connect to Cloud server</string>
 </resources>

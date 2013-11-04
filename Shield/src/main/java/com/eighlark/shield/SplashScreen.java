@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -17,13 +18,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eighlark.shield.domain.user.User;
+import com.eighlark.shield.domain.AppInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.PlusClient;
 import com.testflightapp.lib.TestFlight;
+
+import java.io.IOException;
 
 public class SplashScreen extends Activity
         implements
@@ -35,19 +39,22 @@ public class SplashScreen extends Activity
 
     // Shared Preferences
     SharedPreferences sharedPreferences;
-    private User user;
+
+    // AppInfo Persistence Library
+    private AppInfo appInfo;
 
     private static final int DIALOG_GET_GOOGLE_PLAY_SERVICES = 1;
-
     private static final int REQUEST_CODE_SIGN_IN = 1;
     private static final int REQUEST_CODE_GET_GOOGLE_PLAY_SERVICES = 2;
-    private static final long SPLASH_SCREEN_DELAY = 5000;
+    private static final long SPLASH_SCREEN_DELAY = 2000;
 
     private PlusClient sPlusClient;
     private SignInButton sSignInButton;
     private LinearLayout splashScreenLoader;
     private TextView sLoadingText;
     private ConnectionResult sConnectionResult;
+
+    GoogleCloudMessaging googleCloudMessaging;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +92,11 @@ public class SplashScreen extends Activity
     protected void onResume() {
         super.onResume();
 
-        user = new User(this);
+        appInfo = new AppInfo(this);
         updateUI(View.INVISIBLE, View.VISIBLE, getString(R.string.status_loading));
 
         // Check if the application is running for the first time
-        if (!user.exists()) {
+        if (!appInfo.exists()) {
             Log.i(TAG, "First Run of Application");
             updateUI(View.VISIBLE, View.INVISIBLE, getString(R.string.status_loading));
 
@@ -104,16 +111,23 @@ public class SplashScreen extends Activity
     @Override
     public void onConnected(Bundle bundle) {
         updateUI(View.INVISIBLE, View.VISIBLE, getString(R.string.status_sign_in));
-        if (!user.exists()) {
+        if (!appInfo.exists()) {
             Log.i(TAG, "Saving user to shared preference");
 
             // Retrieve User Profile from PlusClient and save to shared Preference
-            user.setName(sPlusClient.getCurrentPerson().getDisplayName());
-            user.setEmail(sPlusClient.getAccountName());
+            appInfo.setUSER_NAME(sPlusClient.getCurrentPerson().getDisplayName());
+            appInfo.setEMAIL_ID(sPlusClient.getAccountName());
 
-            // TODO Get GCM ID after registering device on GCM server.
-            user.setGcmId(getString(R.string.PREF_GCM_ID_DEFAULT));
-            user.save();
+            // Create a GCM intance to register the device with GCM servers
+            if (googleCloudMessaging == null)
+                googleCloudMessaging =
+                        GoogleCloudMessaging.getInstance(getApplicationContext());
+
+            /*
+             * Register device with GCM server and retrieve REG_ID.
+             * Calls {@link appInfo.save(), if gcm_id is not null.
+             */
+            new registerDeviceTask().execute(null, null, null);
         }
         startApplication();
     }
@@ -187,9 +201,10 @@ public class SplashScreen extends Activity
     }
 
     private void startApplication() {
-        if (user.exists()) {
+        if (appInfo.exists()) {
             updateUI(View.INVISIBLE, View.VISIBLE, getString(R.string.status_loading));
             Log.i(TAG, "User already created, Starting Activity");
+            Log.i(TAG, "GCM ID: " + appInfo.getGCM_ID());
             TestFlight.log(
                     this.getLocalClassName() +
                             ": " +
@@ -212,5 +227,27 @@ public class SplashScreen extends Activity
         sSignInButton.setVisibility(SIGN_IN_BUTTON);
         splashScreenLoader.setVisibility(SPLASH_LOADER);
         sLoadingText.setText(status_text);
+    }
+
+    private class registerDeviceTask extends AsyncTask<Void, Integer, String> {
+        protected String doInBackground(Void... params) {
+            String msg = null;
+            try {
+                // Save REG_ID after registration into shared preferences
+                appInfo.setGCM_ID(googleCloudMessaging.register(appInfo.SENDER_ID));
+            } catch (IOException ex) {
+                msg = "Error: " + ex.getMessage();
+            }
+            return msg;
+        }
+
+        protected void onPostExecute(String result) {
+            if (result != null) {
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+            } else if (appInfo.getGCM_ID() != null) {
+                appInfo.save();
+            }
+            startApplication();
+        }
     }
 }
