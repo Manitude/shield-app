@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:id="@+id/splashscreen_loader"
@@ -23,7 +23,7 @@
         android:orientation="vertical"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,12 +34,12 @@
 
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             android:indeterminate="true"
             android:indeterminateOnly="true" />
 
-        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

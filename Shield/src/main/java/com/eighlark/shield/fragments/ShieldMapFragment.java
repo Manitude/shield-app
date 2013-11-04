@@ -27,6 +27,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -41,6 +43,8 @@ public class ShieldMapFragment extends Fragment
         LocationListener,
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnInfoWindowClickListener {
+
+    private static final String TAG = "MapFragment";
 
     /**
      * The fragment argument representing the section number for this
@@ -245,12 +249,23 @@ public class ShieldMapFragment extends Fragment
                 sMap.setMyLocationEnabled(true);
                 sMap.setOnMyLocationButtonClickListener(this);
                 sMap.setOnInfoWindowClickListener(this);
+
+                // Catch NullPointer Exception to restart activity if sMap == null.
                 try {
+                    LatLng currentLocation = new LatLng(
+                            sLocationClient.getLastLocation().getLatitude(),
+                            sLocationClient.getLastLocation().getLongitude());
+
+                    // Add current location marker to map
                     currentLocationMarker = sMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(
-                                    sLocationClient.getLastLocation().getLatitude(),
-                                    sLocationClient.getLastLocation().getLongitude()))
+                            .position(currentLocation)
                             .title(getString(R.string.marker_current_location)));
+
+                    // Animate Map camera to the currentLocationMarker.
+                    CameraUpdate cameraUpdate =
+                            CameraUpdateFactory.newLatLngZoom(currentLocation, 16);
+                    sMap.animateCamera(cameraUpdate);
+
                 } catch (NullPointerException e) {
                     Intent intent = getActivity().getIntent();
                     getActivity().finish();
