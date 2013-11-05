@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eighlark.shield.domain.AppInfo;
+import com.eighlark.shield.domain.CommonUtilities;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -117,17 +118,7 @@ public class SplashScreen extends Activity
             // Retrieve User Profile from PlusClient and save to shared Preference
             appInfo.setUSER_NAME(sPlusClient.getCurrentPerson().getDisplayName());
             appInfo.setEMAIL_ID(sPlusClient.getAccountName());
-
-            // Create a GCM intance to register the device with GCM servers
-            if (googleCloudMessaging == null)
-                googleCloudMessaging =
-                        GoogleCloudMessaging.getInstance(getApplicationContext());
-
-            /*
-             * Register device with GCM server and retrieve REG_ID.
-             * Calls {@link appInfo.save(), if gcm_id is not null.
-             */
-            new registerDeviceTask().execute(null, null, null);
+            appInfo.save();
         }
         startApplication();
     }
@@ -204,7 +195,6 @@ public class SplashScreen extends Activity
         if (appInfo.exists()) {
             updateUI(View.INVISIBLE, View.VISIBLE, getString(R.string.status_loading));
             Log.i(TAG, "User already created, Starting Activity");
-            Log.i(TAG, "GCM ID: " + appInfo.getGCM_ID());
             TestFlight.log(
                     this.getLocalClassName() +
                             ": " +
@@ -227,27 +217,5 @@ public class SplashScreen extends Activity
         sSignInButton.setVisibility(SIGN_IN_BUTTON);
         splashScreenLoader.setVisibility(SPLASH_LOADER);
         sLoadingText.setText(status_text);
-    }
-
-    private class registerDeviceTask extends AsyncTask<Void, Integer, String> {
-        protected String doInBackground(Void... params) {
-            String msg = null;
-            try {
-                // Save REG_ID after registration into shared preferences
-                appInfo.setGCM_ID(googleCloudMessaging.register(appInfo.SENDER_ID));
-            } catch (IOException ex) {
-                msg = "Error: " + ex.getMessage();
-            }
-            return msg;
-        }
-
-        protected void onPostExecute(String result) {
-            if (result != null) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-            } else if (appInfo.getGCM_ID() != null) {
-                appInfo.save();
-            }
-            startApplication();
-        }
     }
 }

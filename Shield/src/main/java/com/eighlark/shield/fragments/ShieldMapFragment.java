@@ -162,7 +162,8 @@ public class ShieldMapFragment extends Fragment
             LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
             // TODO Create custom location marker by retrieving profile picture of user from Google+
-            currentLocationMarker.setPosition(currentLocation);
+            if (currentLocationMarker != null)
+                currentLocationMarker.setPosition(currentLocation);
 
             // Test Flight Log
             TestFlight.log("Current Location: " + currentLocation.toString());

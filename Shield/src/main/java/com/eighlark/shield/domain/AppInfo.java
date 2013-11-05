@@ -15,17 +15,11 @@ import com.eighlark.shield.R;
  */
 public class AppInfo {
 
-    // For Google API Key reference
-    public static final String SENDER_ID = "825002230196";
-
     private static final String PREF_USER_NAME =
             "com.eighlark.shield.info.PREF_USER_NAME";
 
     private static final String PREF_EMAIL_ID =
             "com.eighlark.shield.info.PREF_EMAIL_ID";
-
-    private static final String PREF_GCM_ID =
-            "com.eighlark.shield.info.PREF_GCM_ID";
 
     private static final String PREF_APP_VERSION =
             "com.eighlark.shield.info.PREF_APP_VERSION";
@@ -38,7 +32,6 @@ public class AppInfo {
 
     private String USER_NAME;
     private String EMAIL_ID;
-    private String GCM_ID;
     private int APP_VERSION;
 
     public String getUSER_NAME() {
@@ -55,14 +48,6 @@ public class AppInfo {
 
     public void setEMAIL_ID(String EMAIL_ID) {
         this.EMAIL_ID = EMAIL_ID;
-    }
-
-    public String getGCM_ID() {
-        return GCM_ID;
-    }
-
-    public void setGCM_ID(String GCM_ID) {
-        this.GCM_ID = GCM_ID;
     }
 
     public int getAPP_VERSION() {
@@ -87,8 +72,6 @@ public class AppInfo {
                     PREF_USER_NAME, context.getString(R.string.PREF_USER_NAME_DEFAULT));
             this.EMAIL_ID = sharedPreferences.getString(
                     PREF_EMAIL_ID, context.getString(R.string.PREF_EMAIL_ID_DEFAULT));
-            this.GCM_ID = sharedPreferences.getString(
-                    PREF_GCM_ID, context.getString(R.string.PREF_GCM_ID_DEFAULT));
             this.APP_VERSION = sharedPreferences.getInt(
                     PREF_APP_VERSION,
                     Integer.valueOf(context.getString(R.string.PREF_APP_VERSION_DEFAULT)));
@@ -122,9 +105,6 @@ public class AppInfo {
         if (this.EMAIL_ID == null)
             throw new IllegalStateException(
                     "Set EMAIL_ID using Info.setEmailId() before calling Info.save()");
-        if (this.GCM_ID == null)
-            throw new IllegalStateException(
-                    "Set GCM_ID using Info.setGcmId() before calling Info.save()");
         if (this.APP_VERSION <= 0)
             throw new IllegalArgumentException("Illegal value of Info.APP_VERSION");
 
@@ -132,7 +112,6 @@ public class AppInfo {
 
         sEditor.putString(PREF_USER_NAME, this.USER_NAME);
         sEditor.putString(PREF_EMAIL_ID, this.EMAIL_ID);
-        sEditor.putString(PREF_GCM_ID, this.GCM_ID);
         sEditor.putInt(PREF_APP_VERSION, this.APP_VERSION);
 
         // Sets flag reflecting app information has been saved.
