@@ -7,6 +7,7 @@ package com.eighlark.shield;
  */
 import android.app.Application;
 
+import com.parse.Parse;
 import com.testflightapp.lib.TestFlight;
 
 public class Shield extends Application {
@@ -14,5 +15,10 @@ public class Shield extends Application {
     public void onCreate() {
         super.onCreate();
         TestFlight.takeOff(this, "9dcc57b4-6e07-4c7e-88bb-a2a8782db7fd");
+
+        // Initialize Parse Library
+        Parse.initialize(this,
+                "KQwLyizN30RXqIGE7jXqbgdeRf8WnpqPUd84ua9E",
+                "WfLNlgXJC3OfZ45FenhoGbHtrboLmrIhsrTfDpXv");
     }
 }

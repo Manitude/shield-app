@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -16,19 +15,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.eighlark.shield.domain.AppInfo;
-import com.eighlark.shield.domain.CommonUtilities;
+import com.eighlark.shield.domain.UserInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.PlusClient;
+import com.parse.ParseAnalytics;
 import com.testflightapp.lib.TestFlight;
-
-import java.io.IOException;
 
 public class SplashScreen extends Activity
         implements
@@ -41,8 +37,8 @@ public class SplashScreen extends Activity
     // Shared Preferences
     SharedPreferences sharedPreferences;
 
-    // AppInfo Persistence Library
-    private AppInfo appInfo;
+    // UserInfo Persistence Library
+    private UserInfo userInfo;
 
     private static final int DIALOG_GET_GOOGLE_PLAY_SERVICES = 1;
     private static final int REQUEST_CODE_SIGN_IN = 1;
@@ -54,8 +50,6 @@ public class SplashScreen extends Activity
     private LinearLayout splashScreenLoader;
     private TextView sLoadingText;
     private ConnectionResult sConnectionResult;
-
-    GoogleCloudMessaging googleCloudMessaging;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +76,8 @@ public class SplashScreen extends Activity
         splashScreenLoader = (LinearLayout) findViewById(R.id.splashscreen_loader);
         sLoadingText = (TextView) findViewById(R.id.loadingText);
         sSignInButton.setOnClickListener(this);
+
+        ParseAnalytics.trackAppOpened(getIntent());
     }
 
     @Override
@@ -93,11 +89,11 @@ public class SplashScreen extends Activity
     protected void onResume() {
         super.onResume();
 
-        appInfo = new AppInfo(this);
+        userInfo = new UserInfo(this);
         updateUI(View.INVISIBLE, View.VISIBLE, getString(R.string.status_loading));
 
         // Check if the application is running for the first time
-        if (!appInfo.exists()) {
+        if (!userInfo.exists()) {
             Log.i(TAG, "First Run of Application");
             updateUI(View.VISIBLE, View.INVISIBLE, getString(R.string.status_loading));
 
@@ -112,13 +108,13 @@ public class SplashScreen extends Activity
     @Override
     public void onConnected(Bundle bundle) {
         updateUI(View.INVISIBLE, View.VISIBLE, getString(R.string.status_sign_in));
-        if (!appInfo.exists()) {
+        if (!userInfo.exists()) {
             Log.i(TAG, "Saving user to shared preference");
 
             // Retrieve User Profile from PlusClient and save to shared Preference
-            appInfo.setUSER_NAME(sPlusClient.getCurrentPerson().getDisplayName());
-            appInfo.setEMAIL_ID(sPlusClient.getAccountName());
-            appInfo.save();
+            userInfo.setUSER_NAME(sPlusClient.getCurrentPerson().getDisplayName());
+            userInfo.setEMAIL_ID(sPlusClient.getAccountName());
+            userInfo.save();
         }
         startApplication();
     }
@@ -192,7 +188,7 @@ public class SplashScreen extends Activity
     }
 
     private void startApplication() {
-        if (appInfo.exists()) {
+        if (userInfo.exists()) {
             updateUI(View.INVISIBLE, View.VISIBLE, getString(R.string.status_loading));
             Log.i(TAG, "User already created, Starting Activity");
             TestFlight.log(

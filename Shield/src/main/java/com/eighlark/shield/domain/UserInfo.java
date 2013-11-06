@@ -13,7 +13,7 @@ import com.eighlark.shield.R;
  * Author: Akshay
  * Date:   3/11/13
  */
-public class AppInfo {
+public class UserInfo {
 
     private static final String PREF_USER_NAME =
             "com.eighlark.shield.info.PREF_USER_NAME";
@@ -59,7 +59,7 @@ public class AppInfo {
      * @param context, Application context passed in calling activity
      * @throws IllegalArgumentException, if context equals null
      */
-    public AppInfo(Context context) throws IllegalArgumentException {
+    public UserInfo(Context context) throws IllegalArgumentException {
         if (context == null) throw
                 new IllegalArgumentException("Application Context can not be null");
 
