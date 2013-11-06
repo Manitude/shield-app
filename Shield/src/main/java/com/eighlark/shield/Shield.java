@@ -8,6 +8,7 @@ package com.eighlark.shield;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 import com.testflightapp.lib.TestFlight;
 
 public class Shield extends Application {
@@ -20,5 +21,7 @@ public class Shield extends Application {
         Parse.initialize(this,
                 "KQwLyizN30RXqIGE7jXqbgdeRf8WnpqPUd84ua9E",
                 "WfLNlgXJC3OfZ45FenhoGbHtrboLmrIhsrTfDpXv");
+
+        ParseFacebookUtils.initialize("226605250848315");
     }
 }

@@ -1,1 +1,1 @@
-include ':Shield'
+include ':Shield', ':facebook'
