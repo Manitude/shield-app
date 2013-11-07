@@ -14,9 +14,11 @@
 
     <!-- Splash Screen Activity -->
     <string name="status_loading">Initializing...</string>
+    <string name="status_logging_in">Logging in...</string>
     <string name="status_welcome">Welcome, </string>
 
     <!-- Facebook SDK -->
     <string name="app_id">226605250848315</string>
+    <string name="login_with_facebook">Login with Facebook</string>
 
 </resources>

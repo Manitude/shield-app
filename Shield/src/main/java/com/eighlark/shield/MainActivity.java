@@ -17,6 +17,8 @@ import android.support.v4.widget.DrawerLayout;
 import com.eighlark.shield.fragments.NavigationDrawerFragment;
 import com.eighlark.shield.fragments.PlaceholderFragment;
 import com.eighlark.shield.fragments.ShieldMapFragment;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity
         implements
@@ -47,6 +49,10 @@ public class MainActivity extends ActionBarActivity
         sNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        // Informs Parse Push Service that this class will handle all Push Notifications
+        PushService.setDefaultPushCallback(this, MainActivity.class);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 
     @Override

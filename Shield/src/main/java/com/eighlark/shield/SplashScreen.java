@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.Request;
@@ -20,6 +23,9 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class SplashScreen extends Activity {
 
     private static final String TAG = "SplashScreen";
@@ -27,10 +33,15 @@ public class SplashScreen extends Activity {
     private static final long SPLASH_SCREEN_DELAY = 2000;
 
     // Parse Object to store loggedIn User.
-    ParseUser parseUser;
+    ParseUser currentUser;
 
     // UI Handles
     TextView loadingText;
+    Button signInButton;
+    LinearLayout splashScreenLoader;
+
+    // Boolean
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,98 +57,112 @@ public class SplashScreen extends Activity {
 
         ParseAnalytics.trackAppOpened(getIntent());
 
-        loadingText = (TextView) findViewById(R.id.loadingText);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        loadingText = (TextView) findViewById(R.id.loading_text);
+        splashScreenLoader = (LinearLayout) findViewById(R.id.splash_screen_loader);
+        signInButton = (Button) findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* Update UI */
+                splashScreenLoader.setVisibility(View.VISIBLE);
+                signInButton.setVisibility(View.INVISIBLE);
+                loadingText.setText(getString(R.string.status_logging_in));
+                onLoginButtonClicked();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Check if there is a currently logged in user
+        // and they are linked to a Facebook account.
+        currentUser = ParseUser.getCurrentUser();
+        if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
+            /* Update UI */
+            splashScreenLoader.setVisibility(View.VISIBLE);
+            signInButton.setVisibility(View.INVISIBLE);
+            loadingText.setText(
+                    String.format("%s %s",
+                            getString(R.string.status_welcome),
+                            currentUser.get("firstname")));
 
-        handleLogin();
-
+            // Go to the user info activity
+            launchApplication();
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        try {
-            ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
-        } catch (NullPointerException ex) {
-            handleLogin();
-        }
+        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
-    private void handleLogin() {
-
-        parseUser = ParseUser.getCurrentUser();
-
-        if (parseUser == null) {
-            updateUI(false /* isSignedIn */, false /* isFirstLaunch */);
-            ParseFacebookUtils.logIn(this, new LogInCallback() {
-                @Override
-                public void done(ParseUser user, ParseException err) {
-                    if (user == null) {
-                        Log.i(TAG, "Uh oh. The user cancelled the Facebook login.");
-                        updateUI(false /* isSignedIn */, false /* isFirstLaunch */);
-                    } else if (user.isNew()) {
-                        Log.i(TAG, "User signed up and logged in through Facebook!");
-                        parseUser = user;
-                        updateUI(true /* isSignedIn */, true /* isFirstLaunch */);
-                    } else {
-                        Log.i(TAG, "User logged in through Facebook!");
-                        parseUser = user;
-                        updateUI(true /* isSignedIn */, false /* isFirstLaunch */);
-                    }
+    private void onLoginButtonClicked() {
+        List<String> permissions = Arrays.asList("basic_info", "user_about_me",
+                "user_relationships", "user_birthday", "user_location");
+        ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
+                    /* Update UI */
+                    splashScreenLoader.setVisibility(View.INVISIBLE);
+                    signInButton.setVisibility(View.VISIBLE);
+                } else if (user.isNew()) {
+                    Log.d(TAG, "User signed up and logged in through Facebook!");
+                    currentUser = user;
+                    createUser();
+                } else {
+                    Log.d(TAG, "User logged in through Facebook!");
+                    currentUser = user;
+                    /* Update UI */
+                    splashScreenLoader.setVisibility(View.VISIBLE);
+                    signInButton.setVisibility(View.INVISIBLE);
+                    loadingText.setText(
+                            String.format("%s %s",
+                                    getString(R.string.status_welcome),
+                                    currentUser.get("firstname")));
+                    launchApplication();
                 }
-            });
-
-        } else {
-            Log.i(TAG, "Username: " + parseUser.get("firstname"));
-            updateUI(true /* isSignedIn */, false /* isFirstLaunch */);
-        }
-
+            }
+        });
     }
 
-    private void updateUI(boolean isSignIn, boolean isFirstLaunch) {
-        if (isFirstLaunch) {
+    private void createUser() {
+        if (currentUser != null) {
             Session session = ParseFacebookUtils.getSession();
-            if (session.isOpened()) {
+            if (session != null) {
                 Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
                     @Override
                     public void onCompleted(GraphUser user, Response response) {
-                        parseUser.put("firstname", user.getFirstName());
-                        parseUser.saveInBackground(new SaveCallback() {
+                        currentUser.put("firstname", user.getFirstName());
+                        currentUser.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
+                                /* Update UI */
+                                splashScreenLoader.setVisibility(View.VISIBLE);
+                                signInButton.setVisibility(View.INVISIBLE);
                                 loadingText.setText(
-                                        getString(R.string.status_welcome) +
-                                                " " + parseUser.get("firstname"));
+                                        String.format("%s %s",
+                                                getString(R.string.status_welcome),
+                                                currentUser.get("firstname")));
                                 launchApplication();
                             }
                         });
                     }
                 });
             }
-        } else if (isSignIn) {
-            loadingText.setText(
-                    getString(R.string.status_welcome) + " " + parseUser.get("firstname"));
-            launchApplication();
-        } else {
-            loadingText.setText(getString(R.string.status_loading));
         }
     }
 
     private void launchApplication() {
+        Log.i(TAG, "Launching activity");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                                        /* Create an Intent that will start the Main-Activity. */
+                // Create an Intent that will start the Main-Activity.
                 Intent mainIntent = new Intent(SplashScreen.this, MainActivity.class);
                 SplashScreen.this.startActivity(mainIntent);
                 SplashScreen.this.finish();
