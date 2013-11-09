@@ -13,9 +13,13 @@
     <string name="action_settings">Settings</string>
 
     <!-- Splash Screen Activity -->
-    <string name="status_loading">Initializing...</string>
-    <string name="status_logging_in">Logging in...</string>
+    <string name="status_loading">Initializing…</string>
+    <string name="status_logging_in">Logging in…</string>
     <string name="status_welcome">Welcome, </string>
+
+    <!-- Notification Title -->
+    <string name="notification_location_title">Shield Travel Companion</string>
+    <string name="notification_location_content">your location sharing is enabled…</string>
 
     <!-- Facebook SDK -->
     <string name="app_id">226605250848315</string>

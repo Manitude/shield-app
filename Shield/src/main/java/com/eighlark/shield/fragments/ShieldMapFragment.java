@@ -264,7 +264,7 @@ public class ShieldMapFragment extends Fragment
 
                     // Animate Map camera to the currentLocationMarker.
                     CameraUpdate cameraUpdate =
-                            CameraUpdateFactory.newLatLngZoom(currentLocation, 16);
+                            CameraUpdateFactory.newLatLngZoom(currentLocation, 17);
                     sMap.animateCamera(cameraUpdate);
 
                 } catch (NullPointerException e) {

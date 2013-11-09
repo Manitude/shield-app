@@ -5,6 +5,8 @@ package com.eighlark.shield;
  * Author: Akshay
  * Date: 1/11/13
  */
+import android.content.ComponentName;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -17,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import com.eighlark.shield.fragments.NavigationDrawerFragment;
 import com.eighlark.shield.fragments.PlaceholderFragment;
 import com.eighlark.shield.fragments.ShieldMapFragment;
+import com.eighlark.shield.location.services.BackgroundLocationService;
 import com.parse.ParseInstallation;
 import com.parse.PushService;
 
@@ -53,6 +56,10 @@ public class MainActivity extends ActionBarActivity
         // Informs Parse Push Service that this class will handle all Push Notifications
         PushService.setDefaultPushCallback(this, MainActivity.class);
         ParseInstallation.getCurrentInstallation().saveInBackground();
+
+        // Intent to start Location Tracking Services
+        Intent broadcastIntent = new Intent(getString(R.string.location_service_intent));
+        this.sendBroadcast(broadcastIntent);
     }
 
     @Override
