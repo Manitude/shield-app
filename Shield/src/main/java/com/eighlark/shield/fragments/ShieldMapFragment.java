@@ -9,8 +9,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -121,6 +123,10 @@ public class ShieldMapFragment extends Fragment
         setUpLocationClientIfNeeded();
 
         sLocationClient.connect();
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String string = sharedPreferences.getString("example_text", "");
+        Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT).show();
     }
 
     @Override
