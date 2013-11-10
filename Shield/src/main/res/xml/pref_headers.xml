@@ -8,7 +8,7 @@
 
     <header
         android:fragment="com.eighlark.shield.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications" />
+        android:title="@string/pref_header_services" />
 
     <header
         android:fragment="com.eighlark.shield.SettingsActivity$DataSyncPreferenceFragment"

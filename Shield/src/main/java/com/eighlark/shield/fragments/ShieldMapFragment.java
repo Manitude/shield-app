@@ -125,7 +125,7 @@ public class ShieldMapFragment extends Fragment
         sLocationClient.connect();
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String string = sharedPreferences.getString("example_text", "");
+        String string = sharedPreferences.getString(getString(R.string.PREF_KEY_DISPLAY_NAME), "");
         Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT).show();
     }
 

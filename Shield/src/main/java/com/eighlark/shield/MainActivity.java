@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity
 
         if (sNavigationDrawerFragment == null)
             sNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+                    getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         sTitle = getTitle();
 
@@ -155,20 +155,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void setupPreferences() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferencesEditor = sharedPreferences.edit();
-        FIRST_RUN = sharedPreferences
-                .getBoolean(getString(R.string.PREF_FIRST_RUN), true);
-
-        if (FIRST_RUN) {
-            sharedPreferencesEditor.putBoolean(getString(R.string.PREF_FIRST_RUN), false);
-            sharedPreferencesEditor.commit();
-
-            // Initialize Default values of preferences on first run
-            PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
-            PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
-            PreferenceManager.setDefaultValues(this, R.xml.pref_notification, false);
-        }
+        // Initialize Default values of preferences on first run
+        PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
+        PreferenceManager.setDefaultValues(this, R.xml.pref_services, false);
+        PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
     }
 
 }
