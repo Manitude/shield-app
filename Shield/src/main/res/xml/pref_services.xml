@@ -5,12 +5,14 @@
     <CheckBoxPreference
         android:key="@string/PREF_KEY_LOC_SERVICE"
         android:title="@string/pref_title_loc_service"
+        android:summary="@string/pref_description_loc_service"
         android:defaultValue="true" />
 
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <CheckBoxPreference
         android:key="@string/PREF_KEY_GEOFENCE_SERVICE"
         android:title="@string/pref_title_geofence_service"
+        android:summary="@string/pref_description_geofence_service"
         android:defaultValue="true" />
 
 </PreferenceScreen>

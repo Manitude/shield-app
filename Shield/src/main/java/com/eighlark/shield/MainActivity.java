@@ -64,12 +64,16 @@ public class MainActivity extends ActionBarActivity
         PushService.setDefaultPushCallback(this, MainActivity.class);
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
-        // Intent to start Location Tracking Services
-        Intent broadcastIntent = new Intent(getString(R.string.location_service_intent));
-        this.sendBroadcast(broadcastIntent);
-
         // If the app is running for the first time setup the default preferences
         setupPreferences();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Enable/Disable Location monitoring service based on user preference
+        setupLocationMonitoring();
     }
 
     @Override
@@ -161,4 +165,9 @@ public class MainActivity extends ActionBarActivity
         PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
     }
 
+    private void setupLocationMonitoring() {
+        // Intent to start Location Tracking Services
+        Intent broadcastIntent = new Intent(getString(R.string.location_service_intent));
+        this.sendBroadcast(broadcastIntent);
+    }
 }
