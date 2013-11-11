@@ -21,7 +21,5 @@ public class Shield extends Application {
         Parse.initialize(this,
                 "KQwLyizN30RXqIGE7jXqbgdeRf8WnpqPUd84ua9E" /* APP ID */,
                 "WfLNlgXJC3OfZ45FenhoGbHtrboLmrIhsrTfDpXv" /* Client Key */);
-
-        ParseFacebookUtils.initialize("226605250848315");
     }
 }
