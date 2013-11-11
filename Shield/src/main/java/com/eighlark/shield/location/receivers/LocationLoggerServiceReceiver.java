@@ -6,8 +6,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.eighlark.shield.R;
 import com.eighlark.shield.location.services.BackgroundLocationService;
 
 /**
@@ -17,28 +19,33 @@ import com.eighlark.shield.location.services.BackgroundLocationService;
  */
 public class LocationLoggerServiceReceiver extends BroadcastReceiver {
 
-    private SharedPreferences mPrefs;
+    private SharedPreferences sharedPreferences;
     public static final String TAG = "LocationLoggerServiceManager";
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        ComponentName componentName = new ComponentName(context.getPackageName(),
+                BackgroundLocationService.class.getName());
 
         Log.i(TAG, "Receiver started");
-        if (isMyServiceRunning(context)) {
 
-            Log.i(TAG, "Location Tracking Service already running");
+        // Start/Stop location monitoring service based on user preference
+        if (sharedPreferences.getBoolean(context.getString(R.string.PREF_KEY_LOC_SERVICE), true)) {
+            if (isMyServiceRunning(context)) {
+
+                Log.i(TAG, "Location Tracking Service already running");
+            } else {
+
+                /*
+                 * Get any previous setting for location updates
+                 * Gets "false" if an error occurs
+                 */
+                context.startService(new Intent().setComponent(componentName));
+            }
         } else {
 
-            /*
-             * Get any previous setting for location updates
-             * Gets "false" if an error occurs
-             */
-            ComponentName comp =
-                    new ComponentName(
-                            context.getPackageName(),
-                            BackgroundLocationService.class.getName());
-
-            context.startService(new Intent().setComponent(comp));
+            context.stopService(new Intent().setComponent(componentName));
         }
 
     }

@@ -1,0 +1,77 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Key -->
+    <string name="PREF_KEY_ALERT_MODE">
+        com.eighlark.shield.settings.PREF_KEY_ALERT_MODE</string>
+    <string name="PREF_KEY_DISPLAY_NAME">
+        com.eighlark.shield.settings.PREF_KEY_DISPLAY_NAME</string>
+    <string name="PREF_KEY_PANIC_METER">
+        com.eighlark.shield.settings.PREF_KEY_PANIC_METER</string>
+    <string name="PREF_KEY_LOC_SERVICE">
+        com.eighlark.shield.settings.PREF_KEY_LOC_SERVICE</string>
+    <string name="PREF_KEY_GEOFENCE_SERVICE">
+        com.eighlark.shield.settings.PREF_KEY_GEOFENCE_SERVICE</string>
+    <string name="PREF_KEY_LOC_SYNC_FREQ">
+        com.eighlark.shield.settings.PREF_KEY_LOC_SYNC_FREQ</string>
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_alert_mode">Enable alert mode</string>
+    <string name="pref_description_alert_mode">
+        Keep enabled while travelling (Recommended)
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_panic_meter">Set panic meter</string>
+    <string-array name="pref_panic_meter_titles">
+        <item>Normal</item>
+        <item>Confused</item>
+        <item>Frightened</item>
+    </string-array>
+    <string-array name="pref_panic_meter_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_loc_sync_frequency">Sync frequency</string>
+    <string-array name="pref_loc_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_loc_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Settings for services -->
+    <string name="pref_header_services">Services</string>
+
+    <string name="pref_title_loc_service">Enable location streaming</string>
+    <string name="pref_description_loc_service">
+        Sends your location updates to people in your circle
+    </string>
+
+    <string name="pref_title_geofence_service">Enable Geo-Fence monitoring</string>
+    <string name="pref_description_geofence_service">
+        Adds an extra layer of service to notify when you leave or arrive at a saved location
+    </string>
+</resources>

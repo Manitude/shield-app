@@ -5,8 +5,9 @@ package com.eighlark.shield;
  * Author: Akshay
  * Date: 1/11/13
  */
-import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -19,7 +20,6 @@ import android.support.v4.widget.DrawerLayout;
 import com.eighlark.shield.fragments.NavigationDrawerFragment;
 import com.eighlark.shield.fragments.PlaceholderFragment;
 import com.eighlark.shield.fragments.ShieldMapFragment;
-import com.eighlark.shield.location.services.BackgroundLocationService;
 import com.parse.ParseInstallation;
 import com.parse.PushService;
 
@@ -36,6 +36,13 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence sTitle;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedPreferencesEditor;
+
+    /**
+     * Application First Run Flag
+     */
+    private boolean FIRST_RUN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +51,7 @@ public class MainActivity extends ActionBarActivity
 
         if (sNavigationDrawerFragment == null)
             sNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+                    getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         sTitle = getTitle();
 
@@ -57,9 +64,16 @@ public class MainActivity extends ActionBarActivity
         PushService.setDefaultPushCallback(this, MainActivity.class);
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
-        // Intent to start Location Tracking Services
-        Intent broadcastIntent = new Intent(getString(R.string.location_service_intent));
-        this.sendBroadcast(broadcastIntent);
+        // If the app is running for the first time setup the default preferences
+        setupPreferences();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Enable/Disable Location monitoring service based on user preference
+        setupLocationMonitoring();
     }
 
     @Override
@@ -137,9 +151,23 @@ public class MainActivity extends ActionBarActivity
          */
         switch (item.getItemId()) {
             case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupPreferences() {
+        // Initialize Default values of preferences on first run
+        PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
+        PreferenceManager.setDefaultValues(this, R.xml.pref_services, false);
+        PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
+    }
+
+    private void setupLocationMonitoring() {
+        // Intent to start Location Tracking Services
+        Intent broadcastIntent = new Intent(getString(R.string.location_service_intent));
+        this.sendBroadcast(broadcastIntent);
+    }
 }
