@@ -5,26 +5,44 @@ package com.eighlark.shield;
  * Author: Akshay
  * Date: 1/11/13
  */
+import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.IntentSender;
+import android.location.Location;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
+import com.eighlark.shield.fragments.ErrorDialogFragment;
 import com.eighlark.shield.fragments.NavigationDrawerFragment;
-import com.eighlark.shield.fragments.PlaceholderFragment;
-import com.eighlark.shield.fragments.ShieldMapFragment;
+import com.eighlark.shield.location.LocationUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseInstallation;
 import com.parse.PushService;
+import com.testflightapp.lib.TestFlight;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BaseActivity
         implements
+        GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener,
+        LocationListener,
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnInfoWindowClickListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -32,17 +50,15 @@ public class MainActivity extends ActionBarActivity
      */
     private NavigationDrawerFragment sNavigationDrawerFragment;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence sTitle;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor sharedPreferencesEditor;
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-    /**
-     * Application First Run Flag
-     */
-    private boolean FIRST_RUN;
+    private FragmentManager sFragmentManager;
+    private SupportMapFragment sSupportMapFragment;
+    private GoogleMap sGoogleMap;
+
+    private LocationClient sLocationClient;
+    private LocationRequest sLocationRequest;
+    private Marker currentLocationMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +69,27 @@ public class MainActivity extends ActionBarActivity
             sNavigationDrawerFragment = (NavigationDrawerFragment)
                     getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        sTitle = getTitle();
-
         // Set up the drawer.
         sNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        // Update the main content by replacing with Map Fragment
+        sFragmentManager = getSupportFragmentManager();
+        sSupportMapFragment = (SupportMapFragment) sFragmentManager.findFragmentById(R.id.map);
+
+        // Create the LocationRequest object
+        sLocationRequest = LocationRequest.create();
+        // Use high accuracy
+        sLocationRequest.setPriority(
+                LocationRequest.PRIORITY_HIGH_ACCURACY);
+        // Set the update interval to 5 seconds
+        sLocationRequest.setInterval(LocationUtils.UPDATE_INTERVAL);
+        // Set the fastest update interval to 1 second
+        sLocationRequest.setFastestInterval(LocationUtils.FASTEST_INTERVAL);
+
+        // Trace the Google Map on UI
+        setUpMapIfNeeded();
 
         // Informs Parse Push Service that this class will handle all Push Notifications
         PushService.setDefaultPushCallback(this, MainActivity.class);
@@ -72,90 +103,155 @@ public class MainActivity extends ActionBarActivity
     protected void onResume() {
         super.onResume();
 
+        // Instantiate Location Client in order to track current location
+        setUpLocationClientIfNeeded();
+
+        sLocationClient.connect();
+
+        // Trace the Google Map on UI
+        setUpMapIfNeeded();
+
         // Enable/Disable Location monitoring service based on user preference
         setupLocationMonitoring();
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (sLocationClient != null) {
+            sLocationClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        sLocationClient.requestLocationUpdates(sLocationRequest, this);  // LocationListener;
+    }
+
+    @Override
+    public void onDisconnected() {
+        // Destroy the current Location Client
+        sLocationClient = null;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+            // TODO Create custom location marker by retrieving profile picture of user from Google+
+            if (currentLocationMarker != null) {
+                currentLocationMarker.setPosition(currentLocation);
+
+            } else {
+                // Add current location marker to map
+                currentLocationMarker = sGoogleMap.addMarker(new MarkerOptions()
+                        .position(currentLocation)
+                        .title(getString(R.string.marker_current_location)));
+
+                // Setup marker and move camera to current marker location
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 16);
+                sGoogleMap.animateCamera(cameraUpdate);
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        /**
+         * If the error has a resolution, start a Google Play services
+         * activity to resolve it.
+         */
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(
+                        this,
+                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                // Log the error
+                e.printStackTrace();
+            }
+            // If no resolution is available, display an error dialog
+        } else {
+            // Get the error code
+            int errorCode = connectionResult.getErrorCode();
+            // Get the error dialog from Google Play services
+            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
+                    errorCode,
+                    this,
+                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            // If Google Play services can provide an error dialog
+            if (errorDialog != null) {
+                // Create a new DialogFragment for the error dialog
+                ErrorDialogFragment errorFragment = new ErrorDialogFragment();
+                // Set the dialog in the DialogFragment
+                errorFragment.setDialog(errorDialog);
+                // Show the error dialog in the DialogFragment
+                errorFragment.show(getSupportFragmentManager(), "Shield");
+            }
+        }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        // Test Flight Log
+        TestFlight.log("My Location Button Clicked");
+
+        // Test Flight Log
+        TestFlight.log("Started Current Location Tracking");
+
+        Toast.makeText(this,
+                getString(R.string.location_trace_status), Toast.LENGTH_SHORT).show();
+        /**
+         * Return false so that we don't consume the event and the default behavior still occurs
+         * (the camera animates to the user's current position).
+         */
+        return false;
+    }
+
+    @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
         switch (position) {
-            case 0:
-                new ShieldMapFragment();
-                Fragment shieldMapFragment = ShieldMapFragment.newInstance(position + 1);
-                shieldMapFragment.getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, shieldMapFragment)
-                        .commit();
-                break;
             default:
-                new PlaceholderFragment();
-                Fragment placeholderFragment = PlaceholderFragment.newInstance(position + 1);
-                placeholderFragment.getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, placeholderFragment)
-                        .commit();
+                Toast.makeText(this, "Loading map...", Toast.LENGTH_SHORT).show();
                 break;
         }
-    }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                sTitle = getString(R.string.title_section_map);
-                break;
-            case 2:
-                sTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                sTitle = getString(R.string.title_section3);
-                break;
-        }
     }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(sTitle);
-    }
-
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (sNavigationDrawerFragment == null)
-            sNavigationDrawerFragment = (NavigationDrawerFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        if (!sNavigationDrawerFragment.isDrawerOpen()) {
-            /**
-             * Only show items in the action bar relevant to this screen
-             * if the drawer is not showing. Otherwise, let the drawer
-             * decide what to show in the action bar.
-             */
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ( keyCode == KeyEvent.KEYCODE_MENU ) {
+            // do nothing
             return true;
         }
-        return super.onCreateOptionsMenu(menu);
+        return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /**
-         * Handle action bar item clicks here. The action bar will
-         * automatically handle clicks on the Home/Up button, so long
-         * as a parent activity is specified in AndroidManifest.xml.
-         */
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
+    private void setUpMapIfNeeded() {
+        if (sSupportMapFragment == null) {
+            sSupportMapFragment = SupportMapFragment.newInstance();
+            sFragmentManager.beginTransaction()
+                    .replace(R.id.container, sSupportMapFragment).commit();
+        } else {
+            sGoogleMap = sSupportMapFragment.getMap();
+            sGoogleMap.setMyLocationEnabled(true);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    private void setUpLocationClientIfNeeded() {
+        if (sLocationClient == null) {
+            sLocationClient = new LocationClient(
+                    this,
+                    this,  // ConnectionCallbacks
+                    this); // OnConnectionFailedListener
+        }
     }
 
     private void setupPreferences() {
