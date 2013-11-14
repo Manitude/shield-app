@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.eighlark.shield.R;
@@ -51,6 +52,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout sDrawerLayout;
     private ListView sDrawerListView;
+    private LinearLayout sDrawerCustomView;
     private View sFragmentContainerView;
 
     private int sCurrentSelectedPosition = 0;
@@ -76,33 +78,41 @@ public class NavigationDrawerFragment extends Fragment {
             sCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             sFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(sCurrentSelectedPosition);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        sDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+
+        /** Initialize the Navigation drawer layout */
+        sDrawerCustomView = (LinearLayout) inflater.inflate(
+                R.layout.fragment_nav_drawer, container, false);
+        sDrawerCustomView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickedItem(view);
+            }
+        });
+
+        /** Initializing the Navigation Drawer option list */
+        sDrawerListView = (ListView) sDrawerCustomView.findViewById(R.id.drawer_list_view);
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(
+                getActivity(),
+                R.layout.nav_drawer_list_view_item,
+                new String[]{
+                        getString(R.string.title_settings),
+                        getString(R.string.title_help),
+                        getString(R.string.title_send_feedback)});
+        sDrawerListView.setAdapter(stringArrayAdapter);
         sDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        sDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section_map),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
         sDrawerListView.setItemChecked(sCurrentSelectedPosition, true);
-        return sDrawerListView;
+
+        return sDrawerCustomView;
     }
 
     public boolean isDrawerOpen() {
@@ -195,6 +205,15 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+    private void clickedItem(View view) {
+        if (sDrawerLayout != null) {
+            sDrawerLayout.closeDrawer(sFragmentContainerView);
+        }
+        if (sCallbacks != null) {
+            sCallbacks.onNavigationDrawerViewClicked(view);
+        }
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -214,7 +233,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, sCurrentSelectedPosition);
+//        outState.putInt(STATE_SELECTED_POSITION, sCurrentSelectedPosition);
     }
 
     @Override
@@ -229,6 +248,13 @@ public class NavigationDrawerFragment extends Fragment {
         sDrawerLayout.openDrawer(sFragmentContainerView);
     }
 
+    /** Closes drawer if already open OnMenuButton click event */
+    public void hideDrawer() {
+        if (isDrawerOpen()) {
+            sDrawerLayout.closeDrawer(sFragmentContainerView);
+        }
+    }
+
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
@@ -237,5 +263,10 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+
+        /**
+         * Called when a view in the navigation drawer is selected.
+         */
+        void onNavigationDrawerViewClicked(View view);
     }
 }

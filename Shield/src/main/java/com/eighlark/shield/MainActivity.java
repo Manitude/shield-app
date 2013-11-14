@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 import android.widget.Toast;
 
 import com.eighlark.shield.fragments.ErrorDialogFragment;
@@ -218,6 +219,10 @@ public class MainActivity extends BaseActivity
     public void onNavigationDrawerItemSelected(int position) {
 
         switch (position) {
+            case 0:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
             default:
                 Toast.makeText(this, "Loading map...", Toast.LENGTH_SHORT).show();
                 break;
@@ -226,10 +231,20 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    public void onNavigationDrawerViewClicked(View view) {
+        Toast.makeText(this, "view clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ( keyCode == KeyEvent.KEYCODE_MENU ) {
-            /** Opens Drawer onMenuButton click event */
-            sNavigationDrawerFragment.showDrawer();
+            if (sNavigationDrawerFragment.isDrawerOpen()) {
+                /** Hide drawer */
+                sNavigationDrawerFragment.hideDrawer();
+            } else {
+                /** Opens Drawer onMenuButton click event */
+                sNavigationDrawerFragment.showDrawer();
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
