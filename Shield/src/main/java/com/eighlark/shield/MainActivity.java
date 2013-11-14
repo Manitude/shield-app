@@ -228,7 +228,8 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ( keyCode == KeyEvent.KEYCODE_MENU ) {
-            // do nothing
+            /** Opens Drawer onMenuButton click event */
+            sNavigationDrawerFragment.showDrawer();
             return true;
         }
         return super.onKeyDown(keyCode, event);

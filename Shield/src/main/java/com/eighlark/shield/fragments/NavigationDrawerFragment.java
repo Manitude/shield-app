@@ -224,6 +224,11 @@ public class NavigationDrawerFragment extends Fragment {
         sDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    /** Opens drawer onMenuButton click event */
+    public void showDrawer() {
+        sDrawerLayout.openDrawer(sFragmentContainerView);
+    }
+
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
