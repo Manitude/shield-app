@@ -46,6 +46,7 @@
                 android:layout_alignParentRight="true"
                 android:contentDescription="@string/search_icon_content_description"
                 android:src="@drawable/ic_my_profile"
+                android:padding="@dimen/image_button_padding"
                 android:onClick="onMyProfileClicked"/>
 
         </RelativeLayout>

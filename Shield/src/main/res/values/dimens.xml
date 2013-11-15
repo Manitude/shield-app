@@ -5,6 +5,9 @@
     <dimen name="activity_margin_horizontal">16dp</dimen>
     <dimen name="activity_margin_vertical">16dp</dimen>
     <dimen name="activity_margin">16dp</dimen>
+    <dimen name="activity_padding_horizontal">16dp</dimen>
+    <dimen name="activity_padding_vertical">16dp</dimen>
+    <dimen name="activity_padding">16dp</dimen>
 
     <!--
          Per the design guidelines, navigation drawers should be between 240dp and 320dp:
@@ -19,6 +22,9 @@
     <dimen name="map_button_padding_vertical">16dip</dimen>
     <dimen name="map_button_padding_horizontal">5dip</dimen>
 
+    <!-- Image Button Padding -->
+    <dimen name="image_button_padding">5dip</dimen>
+
     <!-- Custom button UI -->
     <dimen name="image_button_corner_radius">4dip</dimen>
     <dimen name="image_button_default_stroke_width">1px</dimen>
@@ -30,7 +36,5 @@
     <dimen name="search_layout_corner_radius">4dip</dimen>
     <dimen name="search_layout_stroke_width">1px</dimen>
     <dimen name="search_layout_padding">5dp</dimen>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>
