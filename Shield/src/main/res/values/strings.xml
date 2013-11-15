@@ -17,6 +17,12 @@
     <string name="search_icon_content_description">Search button</string>
     <string name="location_connection_error">Check your network connection</string>
 
+    <!-- Add Person Activity -->
+    <string name="title_activity_add_person">Add Person</string>
+
+    <!-- My Profile Activity -->
+    <string name="title_activity_my_profile">My Profile</string>
+
     <string-array name="planets_array">
         <item>Mercury</item>
         <item>Venus</item>

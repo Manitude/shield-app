@@ -278,9 +278,9 @@ public class MainActivity extends BaseActivity
         startActivity(addPersonActivityIntent);
     }
 
-    // Open {@link UserActivity}
+    // Open {@link MyProfileActivity}
     public void onMyProfileClicked(View view) {
-        Intent userActivityIntent = new Intent(this, UserActivity.class);
+        Intent userActivityIntent = new Intent(this, MyProfileActivity.class);
         startActivity(userActivityIntent);
     }
 
