@@ -20,6 +20,25 @@
             android:layout_height="match_parent"
             class="com.google.android.gms.maps.SupportMapFragment"/>
 
+        <LinearLayout
+            android:id="@+id/search_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:padding="@dimen/layout_linear_search_padding"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/layout_linear_search_custom_background">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/ic_action_search" />
+
+        </LinearLayout>
+
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +50,7 @@
             android:paddingBottom="@dimen/map_button_padding_vertical"
             android:layout_marginBottom="35dp"
             android:layout_marginLeft="-10dp"
+            android:contentDescription="@string/button_navigation_drawer_content_description"
             android:background="@drawable/image_button_custom"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
@@ -46,6 +66,7 @@
             android:layout_marginRight="15dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/image_button_custom"
+            android:contentDescription="@string/my_location_button_content_description"
             android:layout_alignParentBottom="true"
             android:onClick="onMyLocationClicked"/>
 

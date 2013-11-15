@@ -3,6 +3,9 @@
 
     <string name="app_name">Shield</string>
 
+    <!-- Navigation Drawer -->
+    <string name="button_navigation_drawer_content_description">Open navigation drawer</string>
+
     <!-- Main Activity -->
     <string name="title_section_map">Map Screen</string>
     <string name="title_settings">Settings</string>
@@ -10,6 +13,7 @@
     <string name="title_send_feedback">Send Feedback</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="my_location_button_content_description">Shows your current location on map</string>
 
     <!-- Splash Screen Activity -->
     <string name="status_loading">Initializing…</string>

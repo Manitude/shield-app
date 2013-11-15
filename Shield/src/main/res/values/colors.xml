@@ -2,8 +2,21 @@
 <resources>
     <color name="app_logo_text">#F7F7F7</color>
     
-    <!-- Button -->
-    <color name="imageButton_default">#FFFFFF</color>
-    <color name="imageButton_focused">#8ad5f0</color>
-    <color name="imageButton_pressed">#50c0e9</color>
+    <!-- Image Button Start -->
+    <!-- State Default -->
+    <color name="image_button_state_default">#FFFFFF</color>
+    <color name="image_button_default_border_stroke">#b2b2b2</color>
+
+    <!-- State Focused -->
+    <color name="image_button_state_focused">#8ad5f0</color>
+    <color name="image_button_focused_border_stroke">#000000</color>
+
+    <!-- State Pressed -->
+    <color name="image_button_state_pressed">#FFFFFF</color>
+    <color name="image_button_pressed_border_stroke">#50c0e9</color>
+    <!-- Image Button end -->
+
+    <!-- Linear Layout -->
+    <color name="layout_linear_search_background">#FFFFFF</color>
+    <color name="layout_linear_search_border_stroke">#b2b2b2</color>
 </resources>
