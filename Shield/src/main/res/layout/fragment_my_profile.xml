@@ -8,9 +8,14 @@
     android:paddingBottom="@dimen/activity_padding_horizontal"
     tools:context=".MyProfileActivity$MyProfileFragment">
 
-    <TextView
-        android:text="UserActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/layout_background">
+
+        </LinearLayout>
 
 </RelativeLayout>

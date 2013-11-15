@@ -22,4 +22,8 @@
     <!-- Search Layout -->
     <color name="search_layout_background">#FFFFFF</color>
     <color name="search_layout_border_stroke">#9b9b9b</color>
+
+    <!-- General Layout -->
+    <color name="layout_background">#FFFFFF</color>
+    <color name="layout_border_stroke">#9b9b9b</color>
 </resources>
