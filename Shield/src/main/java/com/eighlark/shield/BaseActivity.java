@@ -67,7 +67,6 @@ public class BaseActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         TestFlight.takeOff(getApplication(), "9dcc57b4-6e07-4c7e-88bb-a2a8782db7fd");
 

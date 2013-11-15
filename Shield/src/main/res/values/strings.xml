@@ -17,6 +17,17 @@
     <string name="search_icon_content_description">Search button</string>
     <string name="location_connection_error">Check your network connection</string>
 
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
     <!-- Splash Screen Activity -->
     <string name="status_loading">Initializing…</string>
     <string name="status_logging_in">Logging in…</string>
@@ -28,5 +39,8 @@
 
     <!-- PlusClient -->
     <string name="progress_message">Logging into Google Plus…</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

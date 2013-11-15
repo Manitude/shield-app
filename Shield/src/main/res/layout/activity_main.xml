@@ -31,13 +31,13 @@
             android:layout_alignParentLeft="true"
             android:background="@drawable/search_layout_background">
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <Spinner
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/icon_search"
-                android:contentDescription="@string/search_icon_content_description"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_action_search" />
+                android:id="@+id/friend_list_spinner"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/icon_social_person"
+                android:layout_alignParentLeft="true" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -45,7 +45,8 @@
                 android:id="@+id/icon_social_person"
                 android:layout_alignParentRight="true"
                 android:contentDescription="@string/search_icon_content_description"
-                android:src="@drawable/ic_social_person" />
+                android:src="@drawable/ic_my_profile"
+                android:onClick="onMyProfileClicked"/>
 
         </RelativeLayout>
 

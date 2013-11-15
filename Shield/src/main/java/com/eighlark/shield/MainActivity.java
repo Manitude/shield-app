@@ -15,7 +15,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.widget.ImageButton;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.eighlark.shield.fragments.ErrorDialogFragment;
@@ -42,7 +44,6 @@ public class MainActivity extends BaseActivity
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener,
-        View.OnClickListener,
         GoogleMap.OnInfoWindowClickListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -60,12 +61,20 @@ public class MainActivity extends BaseActivity
     private LocationClient sLocationClient;
     private LatLng sCurrentLocation;
     private LocationRequest sLocationRequest;
-    private Marker currentLocationMarker;
+    private Marker sCurrentLocationMarker;
+
+    // Google Map Camera Settings
+    private float sCameraZoomValue = 15;
     private CameraUpdate sCameraUpdate;
+
+    /* Friend List UI Handles */
+    private Spinner friendListSpinner;
+    private ArrayAdapter<CharSequence> friendListSpinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
         if (sNavigationDrawerFragment == null)
@@ -80,6 +89,17 @@ public class MainActivity extends BaseActivity
         // Update the main content by replacing with Map Fragment
         sFragmentManager = getSupportFragmentManager();
         sSupportMapFragment = (SupportMapFragment) sFragmentManager.findFragmentById(R.id.map);
+
+        // Instantiate UI Handles
+        friendListSpinner = (Spinner) findViewById(R.id.friend_list_spinner);
+        // Create an Adapter using the string array provided
+        friendListSpinnerAdapter = ArrayAdapter.createFromResource(
+                this, R.array.planets_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of dropdown is available
+        friendListSpinnerAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        friendListSpinner.setAdapter(friendListSpinnerAdapter);
 
         // Create the LocationRequest object
         sLocationRequest = LocationRequest.create();
@@ -143,14 +163,14 @@ public class MainActivity extends BaseActivity
     public void onLocationChanged(Location location) {
         if (location != null) {
             sCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            sCameraUpdate = CameraUpdateFactory.newLatLngZoom(sCurrentLocation, 16);
-            if (currentLocationMarker != null) {
-                currentLocationMarker.setPosition(sCurrentLocation);
+            sCameraUpdate = CameraUpdateFactory.newLatLngZoom(sCurrentLocation, sCameraZoomValue);
+            if (sCurrentLocationMarker != null) {
+                sCurrentLocationMarker.setPosition(sCurrentLocation);
 
             } else {
         // TODO Create custom location marker by retrieving profile picture of user from Google+
                 // Add current location marker to map
-                currentLocationMarker = sGoogleMap.addMarker(new MarkerOptions()
+                sCurrentLocationMarker = sGoogleMap.addMarker(new MarkerOptions()
                         .position(sCurrentLocation)
                         .title(getString(R.string.marker_current_location)));
                 // Setup marker and move camera to current marker location
@@ -236,6 +256,7 @@ public class MainActivity extends BaseActivity
         return super.onKeyDown(keyCode, event);
     }
 
+    /* Animate Camera to Current User Location */
     public void onMyLocationClicked(View view) {
         if (sCurrentLocation != null) {
             //TODO add button state change if camera is on current location
@@ -248,6 +269,12 @@ public class MainActivity extends BaseActivity
                     Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    // Open User Activity
+    public void onMyProfileClicked(View view) {
+        Intent userActivityIntent = new Intent(this, UserActivity.class);
+        startActivity(userActivityIntent);
     }
 
     /* Open Navigation Drawer */
