@@ -14,6 +14,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="my_location_button_content_description">Shows your current location on map</string>
+    <string name="search_icon_content_description">Search button</string>
+    <string name="location_connection_error">Check your network connection</string>
 
     <!-- Splash Screen Activity -->
     <string name="status_loading">Initializing…</string>

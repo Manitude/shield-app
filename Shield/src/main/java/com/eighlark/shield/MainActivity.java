@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity
     private GoogleMap sGoogleMap;
 
     private LocationClient sLocationClient;
+    private LatLng sCurrentLocation;
     private LocationRequest sLocationRequest;
     private Marker currentLocationMarker;
     private CameraUpdate sCameraUpdate;
@@ -104,7 +105,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-
+        //TODO Activate emergency mode on network disconnection
+        //TODO retain last valid location {@link sCurrentLocation} in emergency mode
         // Instantiate Location Client in order to track current location
         setUpLocationClientIfNeeded();
 
@@ -128,6 +130,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onConnected(Bundle bundle) {
         sLocationClient.requestLocationUpdates(sLocationRequest, this);  // LocationListener;
+
     }
 
     @Override
@@ -139,20 +142,20 @@ public class MainActivity extends BaseActivity
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            sCameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 16);
-            // TODO Create custom location marker by retrieving profile picture of user from Google+
+            sCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            sCameraUpdate = CameraUpdateFactory.newLatLngZoom(sCurrentLocation, 16);
             if (currentLocationMarker != null) {
-                currentLocationMarker.setPosition(currentLocation);
+                currentLocationMarker.setPosition(sCurrentLocation);
 
             } else {
+        // TODO Create custom location marker by retrieving profile picture of user from Google+
                 // Add current location marker to map
                 currentLocationMarker = sGoogleMap.addMarker(new MarkerOptions()
-                        .position(currentLocation)
+                        .position(sCurrentLocation)
                         .title(getString(R.string.marker_current_location)));
-
                 // Setup marker and move camera to current marker location
                 sGoogleMap.animateCamera(sCameraUpdate);
+
             }
         }
     }
@@ -234,8 +237,17 @@ public class MainActivity extends BaseActivity
     }
 
     public void onMyLocationClicked(View view) {
-        //TODO add button state change if camera is on current location
-        sGoogleMap.animateCamera(sCameraUpdate);
+        if (sCurrentLocation != null) {
+            //TODO add button state change if camera is on current location
+            sGoogleMap.animateCamera(sCameraUpdate);
+
+        } else {
+            Toast.makeText(
+                    this,
+                    getString(R.string.location_connection_error),
+                    Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     /* Open Navigation Drawer */
@@ -248,9 +260,11 @@ public class MainActivity extends BaseActivity
     private void setUpMapIfNeeded() {
         if (sSupportMapFragment == null) {
             sSupportMapFragment = SupportMapFragment.newInstance();
+
         } else {
             sGoogleMap = sSupportMapFragment.getMap();
             sGoogleMap.getUiSettings().setZoomControlsEnabled(false);
+
         }
     }
 

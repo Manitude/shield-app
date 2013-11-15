@@ -21,8 +21,10 @@
     <dimen name="image_button_focused_stroke_width">1px</dimen>
     <dimen name="image_button_pressed_stroke_width">2px</dimen>
 
-    <!-- Linear Layout -->
-    <dimen name="layout_linear_search_corner_radius">4dip</dimen>
-    <dimen name="layout_linear_search_padding">5dp</dimen>
+    <!-- Search Layout -->
+    <dimen name="search_layout_margin">10dp</dimen>
+    <dimen name="search_layout_corner_radius">4dip</dimen>
+    <dimen name="search_layout_stroke_width">1px</dimen>
+    <dimen name="search_layout_padding">5dp</dimen>
 
 </resources>

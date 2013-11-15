@@ -5,7 +5,7 @@
     <!-- Image Button Start -->
     <!-- State Default -->
     <color name="image_button_state_default">#FFFFFF</color>
-    <color name="image_button_default_border_stroke">#b2b2b2</color>
+    <color name="image_button_default_border_stroke">#9b9b9b</color>
 
     <!-- State Focused -->
     <color name="image_button_state_focused">#8ad5f0</color>
@@ -16,7 +16,7 @@
     <color name="image_button_pressed_border_stroke">#50c0e9</color>
     <!-- Image Button end -->
 
-    <!-- Linear Layout -->
-    <color name="layout_linear_search_background">#FFFFFF</color>
-    <color name="layout_linear_search_border_stroke">#b2b2b2</color>
+    <!-- Search Layout -->
+    <color name="search_layout_background">#FFFFFF</color>
+    <color name="search_layout_border_stroke">#9b9b9b</color>
 </resources>

@@ -20,24 +20,34 @@
             android:layout_height="match_parent"
             class="com.google.android.gms.maps.SupportMapFragment"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/search_layout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin"
-            android:padding="@dimen/layout_linear_search_padding"
+            android:layout_margin="@dimen/search_layout_margin"
+            android:padding="@dimen/search_layout_padding"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/layout_linear_search_custom_background">
+            android:background="@drawable/search_layout_background">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView"
+                android:id="@+id/icon_search"
+                android:contentDescription="@string/search_icon_content_description"
+                android:layout_alignParentLeft="true"
                 android:src="@drawable/ic_action_search" />
 
-        </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/icon_social_person"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/search_icon_content_description"
+                android:src="@drawable/ic_social_person" />
+
+        </RelativeLayout>
 
         <ImageButton
             android:layout_width="wrap_content"
