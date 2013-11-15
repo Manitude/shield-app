@@ -33,7 +33,8 @@
             android:layout_marginLeft="-10dp"
             android:background="@drawable/image_button_custom"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            android:onClick="onNavigationDrawerButtonClicked"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/image_button_custom"
             android:layout_alignParentBottom="true"
-            android:onClick="OnMyLocationClicked"/>
+            android:onClick="onMyLocationClicked"/>
 
     </RelativeLayout>
 

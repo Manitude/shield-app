@@ -243,12 +243,12 @@ public class NavigationDrawerFragment extends Fragment {
         sDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /** Opens drawer onMenuButton click event */
+    /** Show drawer if not open onMenuButton click event */
     public void showDrawer() {
         sDrawerLayout.openDrawer(sFragmentContainerView);
     }
 
-    /** Closes drawer if already open OnMenuButton click event */
+    /** Hide drawer if already open OnMenuButton click event */
     public void hideDrawer() {
         if (isDrawerOpen()) {
             sDrawerLayout.closeDrawer(sFragmentContainerView);

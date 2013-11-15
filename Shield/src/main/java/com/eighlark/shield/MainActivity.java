@@ -222,10 +222,10 @@ public class MainActivity extends BaseActivity
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ( keyCode == KeyEvent.KEYCODE_MENU ) {
             if (sNavigationDrawerFragment.isDrawerOpen()) {
-                /** Hide drawer */
+                /** Hide drawer onMenuButton click event */
                 sNavigationDrawerFragment.hideDrawer();
             } else {
-                /** Opens Drawer onMenuButton click event */
+                /** Show Drawer onMenuButton click event */
                 sNavigationDrawerFragment.showDrawer();
             }
             return true;
@@ -233,8 +233,16 @@ public class MainActivity extends BaseActivity
         return super.onKeyDown(keyCode, event);
     }
 
-    public void OnMyLocationClicked(View view) {
+    public void onMyLocationClicked(View view) {
+        //TODO add button state change if camera is on current location
         sGoogleMap.animateCamera(sCameraUpdate);
+    }
+
+    /* Open Navigation Drawer */
+    public void onNavigationDrawerButtonClicked(View view) {
+        if (!sNavigationDrawerFragment.isDrawerOpen()) {
+            sNavigationDrawerFragment.showDrawer();
+        }
     }
 
     private void setUpMapIfNeeded() {
