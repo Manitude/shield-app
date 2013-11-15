@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_padding_horizontal"
     android:paddingTop="@dimen/activity_padding_vertical"
     android:paddingBottom="@dimen/activity_padding_horizontal"
-    tools:context=".UserActivity$PlaceholderFragment">
+    tools:context=".MyProfileActivity$MyProfileFragment">
 
     <TextView
         android:text="UserActivity"
