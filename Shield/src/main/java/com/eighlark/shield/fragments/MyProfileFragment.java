@@ -13,15 +13,15 @@ import com.eighlark.shield.R;
  * Author: Akshay
  * Date:   16/11/13
  */
-public class UserFragment extends Fragment {
+public class MyProfileFragment extends Fragment {
 
-    public UserFragment() {
+    public MyProfileFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_user, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_my_profile, container, false);
         return rootView;
     }
 }
