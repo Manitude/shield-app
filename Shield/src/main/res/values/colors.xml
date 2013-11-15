@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="app_logo_text">#F7F7F7</color>
-    
+
+    <!-- Activity Background -->
+    <color name="activity_background">#f1f1f1</color>
+
     <!-- Image Button Start -->
     <!-- State Default -->
     <color name="image_button_state_default">#FFFFFF</color>

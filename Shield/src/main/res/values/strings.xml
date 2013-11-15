@@ -39,9 +39,5 @@
 
     <!-- PlusClient -->
     <string name="progress_message">Logging into Google Plus…</string>
-    <string name="title_activity_user">UserActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_add_person">AddPersonActivity</string>
 
 </resources>
