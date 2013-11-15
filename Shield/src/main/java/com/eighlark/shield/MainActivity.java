@@ -274,8 +274,8 @@ public class MainActivity extends BaseActivity
 
     // Open {@link AddPersonActivity}
     public void onAddPersonClicked(View view) {
-        Intent userActivityIntent = new Intent(this, UserActivity.class);
-        startActivity(userActivityIntent);
+        Intent addPersonActivityIntent = new Intent(this, AddPersonActivity.class);
+        startActivity(addPersonActivityIntent);
     }
 
     // Open {@link UserActivity}
