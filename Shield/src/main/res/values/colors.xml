@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="splash_background">#ff5678</color>
+    <color name="app_logo_text">#F7F7F7</color>
+    
+    <!-- Button -->
+    <color name="imageButton_default">#FFFFFF</color>
+    <color name="imageButton_focused">#8ad5f0</color>
+    <color name="imageButton_pressed">#50c0e9</color>
 </resources>

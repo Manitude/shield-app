@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.eighlark.shield.fragments.ErrorDialogFragment;
@@ -35,14 +36,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseInstallation;
 import com.parse.PushService;
-import com.testflightapp.lib.TestFlight;
 
 public class MainActivity extends BaseActivity
         implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener,
-        GoogleMap.OnMyLocationButtonClickListener,
+        View.OnClickListener,
         GoogleMap.OnInfoWindowClickListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity
     private LocationClient sLocationClient;
     private LocationRequest sLocationRequest;
     private Marker currentLocationMarker;
+    private CameraUpdate sCameraUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +140,7 @@ public class MainActivity extends BaseActivity
     public void onLocationChanged(Location location) {
         if (location != null) {
             LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
+            sCameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 16);
             // TODO Create custom location marker by retrieving profile picture of user from Google+
             if (currentLocationMarker != null) {
                 currentLocationMarker.setPosition(currentLocation);
@@ -151,8 +152,7 @@ public class MainActivity extends BaseActivity
                         .title(getString(R.string.marker_current_location)));
 
                 // Setup marker and move camera to current marker location
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 16);
-                sGoogleMap.animateCamera(cameraUpdate);
+                sGoogleMap.animateCamera(sCameraUpdate);
             }
         }
     }
@@ -199,23 +199,6 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public boolean onMyLocationButtonClick() {
-        // Test Flight Log
-        TestFlight.log("My Location Button Clicked");
-
-        // Test Flight Log
-        TestFlight.log("Started Current Location Tracking");
-
-        Toast.makeText(this,
-                getString(R.string.location_trace_status), Toast.LENGTH_SHORT).show();
-        /**
-         * Return false so that we don't consume the event and the default behavior still occurs
-         * (the camera animates to the user's current position).
-         */
-        return false;
-    }
-
-    @Override
     public void onNavigationDrawerItemSelected(int position) {
 
         switch (position) {
@@ -250,14 +233,16 @@ public class MainActivity extends BaseActivity
         return super.onKeyDown(keyCode, event);
     }
 
+    public void OnMyLocationClicked(View view) {
+        sGoogleMap.animateCamera(sCameraUpdate);
+    }
+
     private void setUpMapIfNeeded() {
         if (sSupportMapFragment == null) {
             sSupportMapFragment = SupportMapFragment.newInstance();
-            sFragmentManager.beginTransaction()
-                    .replace(R.id.container, sSupportMapFragment).commit();
         } else {
             sGoogleMap = sSupportMapFragment.getMap();
-            sGoogleMap.setMyLocationEnabled(true);
+            sGoogleMap.getUiSettings().setZoomControlsEnabled(false);
         }
     }
 

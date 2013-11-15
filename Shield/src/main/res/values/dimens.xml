@@ -6,7 +6,14 @@
         <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">300dp</dimen>
-
     <dimen name="navigation_drawer_element_padding">25dp</dimen>
     <dimen name="navigation_drawer_listview_padding">15dp</dimen>
+
+    <!-- Custom Map button Padding -->
+    <dimen name="map_button_padding">8dip</dimen>
+    <dimen name="map_button_padding_vertical">16dip</dimen>
+    <dimen name="map_button_padding_horizontal">5dip</dimen>
+
+    <!-- Custom button -->
+    <dimen name="custom_image_button_corner_radius">4dp</dimen>
 </resources>
