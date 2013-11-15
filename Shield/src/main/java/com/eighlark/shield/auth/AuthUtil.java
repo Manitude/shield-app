@@ -1,13 +1,13 @@
 package com.eighlark.shield.auth;
 
-import java.net.HttpURLConnection;
-
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.eighlark.shield.model.User;
 import com.google.android.gms.common.Scopes;
+
+import java.net.HttpURLConnection;
 
 /**
  * Provides static utility methods to help make authenticated requests.

@@ -1,7 +1,5 @@
 package com.eighlark.shield.fragments;
 
-import java.util.Arrays;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -24,6 +22,8 @@ import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallback
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.plus.PlusClient;
+
+import java.util.Arrays;
 
 /**
  * A fragment that you can add to your layout to automate connecting a {@link com.google.android.gms.plus.PlusClient}.

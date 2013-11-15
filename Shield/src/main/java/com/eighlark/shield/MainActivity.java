@@ -5,15 +5,16 @@ package com.eighlark.shield;
  * Author: Akshay
  * Date: 1/11/13
  */
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
-import android.view.KeyEvent;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;

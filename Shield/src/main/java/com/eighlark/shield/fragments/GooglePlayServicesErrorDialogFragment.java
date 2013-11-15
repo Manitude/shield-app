@@ -1,10 +1,10 @@
 package com.eighlark.shield.fragments;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 /**
  * Wraps the {@link android.app.Dialog} returned by
