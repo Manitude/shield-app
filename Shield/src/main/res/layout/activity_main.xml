@@ -31,18 +31,28 @@
             android:layout_alignParentLeft="true"
             android:background="@drawable/search_layout_background">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/icon_add_person"
+                android:layout_alignParentLeft="true"
+                android:contentDescription="@string/search_icon_content_description"
+                android:src="@drawable/ic_add_person"
+                android:padding="@dimen/image_button_padding"
+                android:onClick="onAddPersonClicked"/>
+
             <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/friend_list_spinner"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/icon_social_person"
-                android:layout_alignParentLeft="true" />
+                android:layout_toLeftOf="@+id/icon_my_profile"
+                android:layout_toRightOf="@id/icon_add_person"/>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/icon_social_person"
+                android:id="@+id/icon_my_profile"
                 android:layout_alignParentRight="true"
                 android:contentDescription="@string/search_icon_content_description"
                 android:src="@drawable/ic_my_profile"

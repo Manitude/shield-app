@@ -36,5 +36,7 @@
     <dimen name="search_layout_corner_radius">4dip</dimen>
     <dimen name="search_layout_stroke_width">1px</dimen>
     <dimen name="search_layout_padding">5dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>
