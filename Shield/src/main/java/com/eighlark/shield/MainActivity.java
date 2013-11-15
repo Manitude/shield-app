@@ -34,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -60,9 +61,9 @@ public class MainActivity extends BaseActivity
     private GoogleMap sGoogleMap;
 
     private LocationClient sLocationClient;
-    private LatLng sCurrentLocation;
+    private LatLng sMyLocation;
     private LocationRequest sLocationRequest;
-    private Marker sCurrentLocationMarker;
+    private Marker sMyLocationMarker;
 
     // Google Map Camera Settings
     private float sCameraZoomValue = 15;
@@ -127,7 +128,7 @@ public class MainActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         //TODO Activate emergency mode on network disconnection
-        //TODO retain last valid location {@link sCurrentLocation} in emergency mode
+        //TODO retain last valid location {@link sMyLocation} in emergency mode
         // Instantiate Location Client in order to track current location
         setUpLocationClientIfNeeded();
 
@@ -163,17 +164,19 @@ public class MainActivity extends BaseActivity
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            sCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            sCameraUpdate = CameraUpdateFactory.newLatLngZoom(sCurrentLocation, sCameraZoomValue);
-            if (sCurrentLocationMarker != null) {
-                sCurrentLocationMarker.setPosition(sCurrentLocation);
+            sMyLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            sCameraUpdate = CameraUpdateFactory.newLatLngZoom(sMyLocation, sCameraZoomValue);
+            if (sMyLocationMarker != null) {
+                sMyLocationMarker.setPosition(sMyLocation);
 
             } else {
         // TODO Create custom location marker by retrieving profile picture of user from Google+
                 // Add current location marker to map
-                sCurrentLocationMarker = sGoogleMap.addMarker(new MarkerOptions()
-                        .position(sCurrentLocation)
-                        .title(getString(R.string.marker_current_location)));
+                sMyLocationMarker = sGoogleMap.addMarker(new MarkerOptions()
+                        .position(sMyLocation)
+                        .title(getString(R.string.marker_current_location))
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.ic_location_marker)));
                 // Setup marker and move camera to current marker location
                 sGoogleMap.animateCamera(sCameraUpdate);
 
@@ -259,7 +262,7 @@ public class MainActivity extends BaseActivity
 
     /* Animate Camera to Current User Location */
     public void onMyLocationClicked(View view) {
-        if (sCurrentLocation != null) {
+        if (sMyLocation != null) {
             //TODO add button state change if camera is on current location
             sGoogleMap.animateCamera(sCameraUpdate);
 
