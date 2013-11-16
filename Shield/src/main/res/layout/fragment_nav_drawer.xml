@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/navigation_drawer_element_padding"
+    android:background="#373b3e">
+
+
+    <!--<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:id="@+id/button"/>
+
+        </LinearLayout>-->
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/drawer_list_view"
+        android:divider="@drawable/nav_drawer_list_view_divider"
+        android:paddingLeft="@dimen/navigation_drawer_listview_padding"
+        android:paddingRight="@dimen/navigation_drawer_listview_padding"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>

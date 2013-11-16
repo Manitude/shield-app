@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="splash_background">#ff5678</color>
+    <color name="app_logo_text">#F7F7F7</color>
+
+    <!-- Activity Background -->
+    <color name="activity_background">#f1f1f1</color>
+
+    <!-- Image Button Start -->
+    <!-- State Default -->
+    <color name="image_button_state_default">#FFFFFF</color>
+    <color name="image_button_default_border_stroke">#9b9b9b</color>
+
+    <!-- State Focused -->
+    <color name="image_button_state_focused">#8ad5f0</color>
+    <color name="image_button_focused_border_stroke">#000000</color>
+
+    <!-- State Pressed -->
+    <color name="image_button_state_pressed">#FFFFFF</color>
+    <color name="image_button_pressed_border_stroke">#50c0e9</color>
+    <!-- Image Button end -->
+
+    <!-- Search Layout -->
+    <color name="search_layout_background">#FFFFFF</color>
+    <color name="search_layout_border_stroke">#9b9b9b</color>
+
+    <!-- General Layout -->
+    <color name="layout_background">#FFFFFF</color>
+    <color name="layout_border_stroke">#9b9b9b</color>
 </resources>
