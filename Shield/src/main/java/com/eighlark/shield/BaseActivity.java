@@ -144,11 +144,11 @@ public class BaseActivity extends ActionBarActivity
                 @Override
                 protected void onPostExecute(User result) {
                     if (result != null) {
-                        setAuthenticatedProfile(result);
+                        onSetAuthenticatedProfile(result);
                         executePendingActions();
                         update();
                     } else {
-                        setAuthenticatedProfile(null);
+                        onSetAuthenticatedProfile(null);
                         sPlusClientFragment.signOut();
                     }
                 }
@@ -167,17 +167,17 @@ public class BaseActivity extends ActionBarActivity
      */
     @Override
     public void onSignInFailed() {
-        setAuthenticatedProfile(null);
+        onSetAuthenticatedProfile(null);
         update();
     }
 
     /**
-     * Invoked when the PhotoHunt profile has been successfully retrieved for an
+     * Invoked when the Shield profile has been successfully retrieved for an
      * authenticated user.
      *
      * @param profile
      */
-    public void setAuthenticatedProfile(User profile) {
+    public void onSetAuthenticatedProfile(User profile) {
         sShieldUser = profile;
     }
 

@@ -39,7 +39,9 @@ public class AuthUtil {
     }
 
     public static User authenticate(Context ctx, String account) {
-        return null;
+        //TODO retrieve user from Parse based on Google+ account name
+        User user = new User("sdfsdfsd", account, "asdasd", "Aasdasd");
+        return user;
     }
 
     public static void invalidateSession() {
