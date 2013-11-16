@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="location_service_intent">com.eighlark.shield.START_LOC_SERVICE</string>
+</resources>

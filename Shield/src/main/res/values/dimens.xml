@@ -1,9 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
-        <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
-         https://developer.android.com/design/patterns/navigation-drawer.html -->
-    <dimen name="navigation_drawer_width">240dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_margin_horizontal">16dp</dimen>
+    <dimen name="activity_margin_vertical">16dp</dimen>
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="activity_padding_horizontal">16dp</dimen>
+    <dimen name="activity_padding_vertical">16dp</dimen>
+    <dimen name="activity_padding">16dp</dimen>
+
+    <!--
+         Per the design guidelines, navigation drawers should be between 240dp and 320dp:
+         https://developer.android.com/design/patterns/navigation-drawer.html
+    -->
+    <dimen name="navigation_drawer_width">300dp</dimen>
+    <dimen name="navigation_drawer_element_padding">25dp</dimen>
+    <dimen name="navigation_drawer_listview_padding">15dp</dimen>
+
+    <!-- Custom Map button Padding -->
+    <dimen name="map_button_padding">8dip</dimen>
+    <dimen name="map_button_padding_vertical">16dip</dimen>
+    <dimen name="map_button_padding_horizontal">5dip</dimen>
+
+    <!-- Image Button Padding -->
+    <dimen name="image_button_padding">5dip</dimen>
+
+    <!-- Custom button UI -->
+    <dimen name="image_button_corner_radius">4dip</dimen>
+    <dimen name="image_button_default_stroke_width">1px</dimen>
+    <dimen name="image_button_focused_stroke_width">1px</dimen>
+    <dimen name="image_button_pressed_stroke_width">2px</dimen>
+
+    <!-- Search Layout -->
+    <dimen name="search_layout_padding">5dp</dimen>
+    <dimen name="search_layout_margin">10dp</dimen>
+    <dimen name="search_layout_corner_radius">4dip</dimen>
+    <dimen name="search_layout_stroke_width">1px</dimen>
+
+    <!-- General Layout -->
+    <dimen name="layout_corner_radius">4dip</dimen>
+    <dimen name="layout_stroke_width">1px</dimen>
+
 </resources>

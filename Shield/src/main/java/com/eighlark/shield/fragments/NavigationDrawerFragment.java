@@ -5,27 +5,23 @@ package com.eighlark.shield.fragments;
  * Author: Akshay
  * Date: 1/11/13
  */
-import android.support.v7.app.ActionBarActivity;
+
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.eighlark.shield.R;
 
@@ -57,6 +53,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout sDrawerLayout;
     private ListView sDrawerListView;
+    private LinearLayout sDrawerCustomView;
     private View sFragmentContainerView;
 
     private int sCurrentSelectedPosition = 0;
@@ -82,36 +79,41 @@ public class NavigationDrawerFragment extends Fragment {
             sCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             sFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(sCurrentSelectedPosition);
-
-        // Indicate that this fragment would like to influence the set of actions in the action bar.
-        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        sDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+
+        /** Initialize the Navigation drawer layout */
+        sDrawerCustomView = (LinearLayout) inflater.inflate(
+                R.layout.fragment_nav_drawer, container, false);
+        sDrawerCustomView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickedItem(view);
+            }
+        });
+
+        /** Initializing the Navigation Drawer option list */
+        sDrawerListView = (ListView) sDrawerCustomView.findViewById(R.id.drawer_list_view);
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(
+                getActivity(),
+                R.layout.nav_drawer_list_view_item,
+                new String[]{
+                        getString(R.string.title_settings),
+                        getString(R.string.title_help),
+                        getString(R.string.title_send_feedback)});
+        sDrawerListView.setAdapter(stringArrayAdapter);
         sDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        sDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section_map),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
         sDrawerListView.setItemChecked(sCurrentSelectedPosition, true);
-        return sDrawerListView;
+
+        return sDrawerCustomView;
     }
 
     public boolean isDrawerOpen() {
@@ -131,10 +133,6 @@ public class NavigationDrawerFragment extends Fragment {
         // set a custom shadow that overlays the main content when the drawer opens
         sDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
-
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
 
         /**
          * ActionBarDrawerToggle ties together the proper interactions
@@ -208,6 +206,15 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+    private void clickedItem(View view) {
+        if (sDrawerLayout != null) {
+            sDrawerLayout.closeDrawer(sFragmentContainerView);
+        }
+        if (sCallbacks != null) {
+            sCallbacks.onNavigationDrawerViewClicked(view);
+        }
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -227,7 +234,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, sCurrentSelectedPosition);
+//        outState.putInt(STATE_SELECTED_POSITION, sCurrentSelectedPosition);
     }
 
     @Override
@@ -237,47 +244,16 @@ public class NavigationDrawerFragment extends Fragment {
         sDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        /**
-         * If the drawer is open, show the global app actions in the action bar. See also
-         * showGlobalContextActionBar, which controls the top-left area of the action bar.
-         */
-        if (sDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
-        super.onCreateOptionsMenu(menu, inflater);
+    /** Show drawer if not open onMenuButton click event */
+    public void showDrawer() {
+        sDrawerLayout.openDrawer(sFragmentContainerView);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (sDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+    /** Hide drawer if already open OnMenuButton click event */
+    public void hideDrawer() {
+        if (isDrawerOpen()) {
+            sDrawerLayout.closeDrawer(sFragmentContainerView);
         }
-
-        switch (item.getItemId()) {
-            case R.id.action_example:
-                Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
-    }
-
-    private ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
     /**
@@ -288,5 +264,10 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+
+        /**
+         * Called when a view in the navigation drawer is selected.
+         */
+        void onNavigationDrawerViewClicked(View view);
     }
 }

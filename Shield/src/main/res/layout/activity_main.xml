@@ -8,10 +8,91 @@
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
-    <FrameLayout
-        android:id="@+id/container"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment"/>
+
+        <RelativeLayout
+            android:id="@+id/search_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/search_layout_margin"
+            android:padding="@dimen/search_layout_padding"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/search_layout_background">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/icon_add_person"
+                android:layout_alignParentLeft="true"
+                android:contentDescription="@string/search_icon_content_description"
+                android:src="@drawable/ic_add_person"
+                android:padding="@dimen/image_button_padding"
+                android:onClick="onAddPersonClicked"/>
+
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/friend_list_spinner"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/icon_my_profile"
+                android:layout_toRightOf="@id/icon_add_person"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/icon_my_profile"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/search_icon_content_description"
+                android:src="@drawable/ic_my_profile"
+                android:padding="@dimen/image_button_padding"
+                android:onClick="onMyProfileClicked"/>
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/navigation_drawer_button"
+            android:src="@drawable/ic_drawer"
+            android:paddingLeft="@dimen/map_button_padding_horizontal"
+            android:paddingRight="@dimen/map_button_padding_horizontal"
+            android:paddingTop="@dimen/map_button_padding_vertical"
+            android:paddingBottom="@dimen/map_button_padding_vertical"
+            android:layout_marginBottom="35dp"
+            android:layout_marginLeft="-10dp"
+            android:contentDescription="@string/button_navigation_drawer_content_description"
+            android:background="@drawable/image_button_custom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:onClick="onNavigationDrawerButtonClicked"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/my_location_button"
+            android:src="@drawable/ic_my_location"
+            android:padding="@dimen/map_button_padding"
+            android:layout_marginBottom="35dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/image_button_custom"
+            android:contentDescription="@string/my_location_button_content_description"
+            android:layout_alignParentBottom="true"
+            android:onClick="onMyLocationClicked"/>
+
+    </RelativeLayout>
 
     <fragment android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width"
