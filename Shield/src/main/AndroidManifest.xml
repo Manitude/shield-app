@@ -73,8 +73,8 @@
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="com.eighlark.shield.MyProfileActivity"
-            android:label="@string/title_activity_my_profile"
+            android:name="com.eighlark.shield.UserProfileActivity"
+            android:label="@string/title_activity_user_profile"
             android:parentActivityName="MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

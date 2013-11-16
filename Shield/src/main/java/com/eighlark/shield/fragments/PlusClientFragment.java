@@ -114,14 +114,15 @@ public final class PlusClientFragment extends Fragment
     }
 
     /**
-     * Listener interface for sign in events.  Activities hosting a {@link com.eighlark.shield.fragments.PlusClientFragment}
-     * must implement this.
+     * Listener interface for sign in events.  Activities hosting a
+     * {@link com.eighlark.shield.fragments.PlusClientFragment} must implement this.
      */
     public static interface OnSignInListener {
         /**
-         * Called when the {@link com.google.android.gms.plus.PlusClient} has been connected successfully.
-         *
-         * @param plusClient The connected {@link com.google.android.gms.plus.PlusClient} to make requests on.
+         * Called when the {@link com.google.android.gms.plus.PlusClient} has been
+         * connected successfully.
+         * @param plusClient The connected {@link com.google.android.gms.plus.PlusClient}
+         * to make requests on.
          */
         void onSignedIn(PlusClient plusClient);
         

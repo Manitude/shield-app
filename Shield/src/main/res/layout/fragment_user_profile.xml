@@ -6,9 +6,10 @@
     android:paddingRight="@dimen/activity_padding_horizontal"
     android:paddingTop="@dimen/activity_padding_vertical"
     android:paddingBottom="@dimen/activity_padding_horizontal"
-    tools:context=".MyProfileActivity$MyProfileFragment">
+    tools:context=".UserProfileActivity$UserProfileFragment">
 
     <LinearLayout
+        android:id="@+id/profile_container"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -17,5 +18,13 @@
         android:background="@drawable/layout_background">
 
         </LinearLayout>
+
+    <include
+        android:id="@+id/sign_in_button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        layout="@layout/sign_in_button" />
 
 </RelativeLayout>

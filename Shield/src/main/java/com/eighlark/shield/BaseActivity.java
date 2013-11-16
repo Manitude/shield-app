@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.eighlark.shield.auth.AuthUtil;
@@ -22,8 +23,9 @@ import com.testflightapp.lib.TestFlight;
  */
 public class BaseActivity extends ActionBarActivity
         implements
-        PlusClientFragment.OnSignInListener,
-        View.OnClickListener {
+        PlusClientFragment.OnSignInListener {
+
+    private static final String TAG = "BaseActivity";
 
     /**
      * Code used to identify the login request to the {@link PlusClientFragment}
@@ -57,12 +59,6 @@ public class BaseActivity extends ActionBarActivity
      */
     protected View sPendingView;
 
-    /**
-     * Stores the @link com.google.android.gms.common.SignInButton} for use in
-     * the action bar.
-     */
-    protected SignInButton sSignInButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +80,6 @@ public class BaseActivity extends ActionBarActivity
         // to the user's vault.
         sPlusClientFragment = PlusClientFragment.getPlusClientFragment(this, AuthUtil.SCOPES,
                 AuthUtil.VISIBLE_ACTIVITIES);
-
-        sSignInButton = (SignInButton) getLayoutInflater().inflate(
-                R.layout.sign_in_button, null);
-        sSignInButton.setOnClickListener(this);
     }
 
     @Override
@@ -205,11 +197,9 @@ public class BaseActivity extends ActionBarActivity
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.sign_in_button) {
-            sPlusClientFragment.signIn(REQUEST_CODE_PLUS_CLIENT_FRAGMENT);
-        }
+    public void signIn() {
+        Log.i(TAG, "sign in clicked");
+        sPlusClientFragment.signIn(REQUEST_CODE_PLUS_CLIENT_FRAGMENT);
     }
 
     /**

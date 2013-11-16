@@ -20,8 +20,8 @@
     <!-- Add Person Activity -->
     <string name="title_activity_add_person">Add Person</string>
 
-    <!-- My Profile Activity -->
-    <string name="title_activity_my_profile">My Profile</string>
+    <!-- User Profile Activity -->
+    <string name="title_activity_user_profile">Your Profile</string>
 
     <string-array name="planets_array">
         <item>Mercury</item>
